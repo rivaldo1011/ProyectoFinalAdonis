@@ -5,6 +5,8 @@ const sch_Sensores=new Schema({
   "idUsuario": Number,
   "NombreSensor": String,
   "Descripcion": String,
+  "GPIO":Array,
+  "Estado":String,
   "Fechadecreacion": Date,
   "Fechadeactualizacion": Date
 });
