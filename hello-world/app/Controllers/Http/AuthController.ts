@@ -11,7 +11,11 @@ export default class AuthController
         const token = await auth.use("api").attempt(email, password, {
           expiresIn: "10 days",
         });
-        return token.toJSON();
+        try {
+          return token.toJSON();
+        } catch (error) {
+          
+        }
       }
       public async register({ request, auth }: HttpContextContract) {
         const email = request.input("email");
