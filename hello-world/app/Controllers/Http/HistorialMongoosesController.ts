@@ -1,34 +1,27 @@
 import { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
-import Historial from 'App/Models/Historial'
-import mongoose, { Schema } from 'mongoose'
+import sch_Historial from 'App/Models/Historial'
+const mongoose=require("mongoose");
+mongoose
+    .connect("mongodb+srv://root:ZXCVzxcv1234@sandbox1.1jic6.mongodb.net/proyecto")
+    .then(()=>console.log("conectado"))
+    .catch((error)=>console.error(error))
 
+    
 export default class HistorialMongoosesController {
-  private mongo = mongoose
-  async conexcion() {
-    try {
-      await this.mongo
-        .connect('mongodb+srv://root:ZXCVzxcv1234@sandbox1.1jic6.mongodb.net/proyecto', {  
-        maxIdleTimeMS: 6000,
-        })
-        .then((db) => console.log('conectado a ' + this.mongo.connection.name))
-        .catch((er) => console.log(er))
-    } catch (error) {
-      return error
-    }
-  }
-  async mostar() {
-    const con = mongoose.createConnection(
-      'mongodb+srv://root:ZXCVzxcv1234@sandbox1.1jic6.mongodb.net/proyecto'
-    )
-    const preb = con.model('historial', Historial)
-    const buscar = preb
-      .find({})
-      .then((data) => {
-        console.log(data)
+ 
+  public async index({response}: HttpContextContract) {
+    const historial= await sch_Historial.find()
+    return response.created({
+      status:true,
+      data:historial
+    })}
+
+    public async store({request,response}: HttpContextContract) {
+      const historialdata=request.only(['id','idsensor','Nombre','Valor','Fechadecreacion','Fechadeactualizacion'])
+      const historial=await sch_Historial.create(historialdata);
+      return response.created({
+        status:true,
+        data:historial
       })
-      .catch((err) => {
-        console.log(err)
-      })
-    return buscar
-  }
+     }
 }

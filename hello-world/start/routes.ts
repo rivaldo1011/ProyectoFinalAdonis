@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 /*
 |--------------------------------------------------------------------------
 | Routes
@@ -20,10 +21,15 @@
 
 import Route from '@ioc:Adonis/Core/Route'
 
+Route.post('register', 'AuthController.register')
+Route.post('login', 'AuthController.login')
 
-Route.post("register", "AuthController.register");
-Route.post("login", "AuthController.login");
+Route.get('mostraConexion', 'HistorialMongoosesController.conexcion');
+Route.get('mostrarSensores', 'SensoresMongoosesController.mostar');
 
-
-Route.get('mostraConexion','HistorialMongoosesController.conexcion');
-Route.get('mostrarSensores','SensoresMongoosesController.mostar');
+Route.get('token', async ({ auth,response}) => {
+    await auth.use('api').authenticate()
+    console.log(auth.use('api').user!)
+    return response.created({
+      resp:"activo",
+      data:auth.user})})

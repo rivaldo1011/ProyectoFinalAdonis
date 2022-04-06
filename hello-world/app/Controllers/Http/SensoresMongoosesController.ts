@@ -1,34 +1,25 @@
-import Sensore from 'App/Models/Sensore'
-import mongoose, { Schema } from 'mongoose'
+import { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
+import sch_Sensores from 'App/Models/Sensore'
+const mongoose=require("mongoose");
+mongoose
+    .connect("mongodb+srv://root:ZXCVzxcv1234@sandbox1.1jic6.mongodb.net/proyecto")
+    .then(()=>console.log("conectado"))
+    .catch((error)=>console.error(error))
+
 
 export default class SensoresMongoosesController {
-  private mongo = mongoose
-  async conexcion() {
-    try {
-      await this.mongo
-        .connect('mongodb+srv://root:proyecto@proyecto.1jic6.mongodb.net/proyecto', {
-          maxIdleTimeMS: 6000,
-        })
-        .then((db) => console.log('conectado a' + this.mongo.connection.name))
-        .catch((er) => console.log(er))
-    } catch (error) {
-      return error
-    }
-  }
-  async mostar() {
-    const con = mongoose.createConnection(
-      'mongodb+srv://root:proyecto@sandbox1.1jic6.mongodb.net/proyecto'
-    )
-    const preb = con.model('sensores', Sensore)
-    const buscar = preb
-      .find({})
-      .then((data) => {
-        console.log(data)
-      })
-      .catch((err) => {
-        console.log(err)
-      })
-    return buscar
-  }
-}
+  public async index({response}: HttpContextContract) {
+    const historial= await sch_Sensores.find()
+    return response.created({
+      status:true,
+      data:historial
+    })}
 
+    public async store({request,response}: HttpContextContract) {
+      const sensoredata=request.only(['idsensor','idUsuario','NombreSensor','Descripcion','GPIO','Estado','Fechadecreacion','Fechadeactualizacion'])
+      const sensor=await sch_Sensores.create(sensoredata);
+      return response.created({
+        status:true,
+        data:sensor
+      })}
+}

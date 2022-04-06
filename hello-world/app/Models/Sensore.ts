@@ -1,6 +1,6 @@
-import mongoose, { Schema, model } from 'mongoose';
+const mongoose=require("mongoose")
 
-const sch_Sensores=new Schema({
+const sch_Sensores=mongoose.Schema({
   "idsensor": Number,
   "idUsuario": Number,
   "NombreSensor": String,

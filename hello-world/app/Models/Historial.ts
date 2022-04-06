@@ -1,13 +1,10 @@
-import mongoose, { Schema, model } from 'mongoose';
+const mongoose=require("mongoose")
 
-const sch_Historial=new Schema({
+const sch_Historial=mongoose.Schema({
   "id": Number,
   "idsensor": Number,
-  "nombre": String,
-  "Estado": String,
+  "Nombre": String,
   "Valor":Array,
-  "Temperatura":Number,
-  "Humedad":Number,
   "Fechadecreacion": Date,
   "Fechadeactualizacion": Date
 });
