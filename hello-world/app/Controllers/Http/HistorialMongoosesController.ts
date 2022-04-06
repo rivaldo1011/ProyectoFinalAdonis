@@ -6,18 +6,23 @@ mongoose
     .then(()=>console.log("conectado"))
     .catch((error)=>console.error(error))
 
-    
 export default class HistorialMongoosesController {
  
-  public async index({response}: HttpContextContract) {
-    const historial= await sch_Historial.find()
-    return response.created({
-      status:true,
-      data:historial
-    })}
-
+    public async index({response}: HttpContextContract) {
+      const historial= await sch_Historial.find()
+      return response.created({
+        status:true,
+        data:historial 
+      })}
+        
     public async store({request,response}: HttpContextContract) {
-      const historialdata=request.only(['id','idsensor','Nombre','Valor','Fechadecreacion','Fechadeactualizacion'])
+      const historialdata=request.only([
+      'id',
+      'idsensor',
+      'Nombre',
+      'Valor',
+      'Fechadecreacion',
+      'Fechadeactualizacion'])
       const historial=await sch_Historial.create(historialdata);
       return response.created({
         status:true,
@@ -25,3 +30,4 @@ export default class HistorialMongoosesController {
       })
      }
 }
+
